@@ -6,10 +6,13 @@ from tkinter import filedialog, messagebox
 import tkinter as tk
 
 tk.Tk().withdraw()
-directory = filedialog.askopenfilename()
-filename = open(directory, 'rb')
-Data = pickle.load(filename)
-filename.close()
+pathname = filedialog.askopenfilename()
+file_name = os.path.split(pathname)[-1]
+nominal_file = os.path.splitext(file_name)[0]
+print(nominal_file)
+file = open(pathname, 'rb')
+Data = pickle.load(file)
+file.close()
 print(Data)
 
 data = {}
@@ -30,5 +33,5 @@ for df, TC in zip(df_list, Data.keys()):
     frame_list.append(df)
 
 df_c = frame_list[0].join(frame_list[1:])
-saveas = filedialog.asksaveasfilename(initialdir='.', filetypes=[('CSV Files', '.csv')])
+saveas = filedialog.asksaveasfilename(initialdir='.', filetypes=[('CSV Files', '.csv')], initialfile=nominal_file+'.csv')
 df_c.to_csv(saveas, index=False)
